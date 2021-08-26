@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx reveal-md src --static dist",
-    "dev": "reveal-md src/test.md",
+    "build": "npx reveal-md README.md --static dist",
+    "dev": "reveal-md README.md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
