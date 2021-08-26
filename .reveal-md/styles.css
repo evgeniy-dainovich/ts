@@ -1,0 +1,20 @@
+.reveal {
+  font-size: 36px;
+}
+
+.reveal pre code {
+  max-height: 80%;
+}
+
+* {
+  /* font-family: Helvetica, sans-serif !important; */
+}
+
+::selection {
+  background: #9d4040d7 !important;
+  color: unset;
+}
+
+:root {
+  --r-heading-text-transform: none;
+}

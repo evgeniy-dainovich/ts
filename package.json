@@ -1,0 +1,18 @@
+{
+  "name": "typescript-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx reveal-md src --static dist",
+    "dev": "reveal-md src/test.md",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "reveal-md": "^5.1.3",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {}
+}
