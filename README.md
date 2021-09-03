@@ -291,7 +291,8 @@ console.log(ODirection.Up) // 0
 ```ts data-line-numbers=[]
 type Container<T> = {value: T}
 
-const container1: Container<number> = {value: '344'} // Type 'string' is not assignable to type 'number'
+// Type 'string' is not assignable to type 'number'
+const container1: Container<number> = {value: '344'}
 const container2: Container<number> = {value: 344}
 ```
 
@@ -599,9 +600,82 @@ type Dictionary2 = Record<string, string | number>
 const dic3: Dictionary2 = {name: 'Garry', level: 4}
 ```
 
-<!--v-->
+<!--s-->
+
+## Typescript issues
+
+- Same interfaces
+- Private is not private
+- Cloning
 
 <!--v-->
+
+### Same interfaces
+
+```ts data-line-numbers=[]
+interface Book {
+  price: number
+  name: string
+}
+
+interface Car {
+  price: number
+  name: string
+  maxSpeed: number
+  color: string
+}
+
+function buyBook(_book: Book): void {}
+
+const car = {
+  price: 10000,
+  name: 'BMW',
+  maxSpeed: 200,
+  color: 'red',
+}
+
+buyBook(car) // no any issues with type cheking
+```
+
+<!--v-->
+
+### Private is not private
+
+```ts data-line-numbers=[]
+class Member {
+  private secret = 'private member'
+}
+
+const member = new Member()
+// Property 'secret' is private and only accessible within class 'Member'.
+member.secret
+// Works like a sharm. The privacy of members are only enforced within the compiler.
+;(member as any).secret
+```
+
+<!--v-->
+
+### Cloning
+
+#### Project code
+
+```ts data-line-numbers=[1,2,5,7,11,12|1,3,6,8,11,13]
+type Metadata = {}
+type UserMetadata = Record<string, Metadata>
+type UserMetadata = Map<string, Metadata>
+
+const cache: UserMetadata = {}
+const cache: UserMetadata = new Map()
+console.log(cache.foo)
+console.log(cache.get('foo'))
+
+// somewhere in the project
+const cacheCopy: UserMetadata = {...cache}
+console.log(cacheCopy.foo)
+console.log(cacheCopy.get('foo'))
+```
+
+<!--s-->
 
 # example
 

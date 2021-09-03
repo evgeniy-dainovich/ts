@@ -1,20 +1,13 @@
 type Metadata = {}
-
-type UserMetadata = { [key: string]: Metadata }
-
-const cache: UserMetadata = {}
-console.log(cache.foo)
-// 30 файлов спустя
-const cacheCopy: UserMetadata = { ...cache }
-console.log(cacheCopy.foo)
-
-// // type UserMetadata = { [key: string]: Metadata } // before
+type UserMetadata = Record<string, Metadata>
 // type UserMetadata = Map<string, Metadata> // after
 
+const cache: UserMetadata = {}
 // const cache: UserMetadata = new Map()
+console.log(cache.foo)
 // console.log(cache.get('foo'))
-// // 30 файлов спустя
 
-// const cacheCopy: UserMetadata = { ...cache }
-
+// somewhere in the project
+const cacheCopy: UserMetadata = {...cache}
+console.log(cacheCopy.foo)
 // console.log(cacheCopy.get('foo'))
