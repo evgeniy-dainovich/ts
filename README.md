@@ -1,8 +1,41 @@
-## Basic
+## Typescript
 
 <!--v-->
 
-### basic types
+### About speaker
+
+My name is Evgeniy Dainovich
+
+Skype: nukink
+
+Presentation and code is located here: [https://evgeniy-dainovich.github.io/ts/](https://evgeniy-dainovich.github.io/ts/)
+
+<!--s-->
+
+## What is TypeScript?
+
+<!--v-->
+
+### TypeScript is JavaScript with syntax for types.
+
+- Voted 2nd most loved programming language in the [Stack Overflow 2020 Developer survey](https://insights.stackoverflow.com/survey/2020#most-loved-dreaded-and-wanted)
+
+- TypeScript was used by 78% of the [2020 State of JS](https://2020.stateofjs.com/en-US/technologies/javascript-flavors/) respondents, with 93% saying they would use it again.
+
+<!--v-->
+
+## Useful links
+
+- [Official documentation](https://www.typescriptlang.org/docs/)
+- [Playground](https://www.typescriptlang.org/play)
+
+<!--s-->
+
+## Primitive types
+
+<!--v-->
+
+### String, number, boolean
 
 ```ts data-line-numbers=[]
 const age: number = 12
@@ -11,6 +44,16 @@ const isAdult: boolean = false
 
 type PaperName = string
 function collect(paper: PaperName): void {}
+```
+
+<!--v-->
+
+### void
+
+```ts data-line-numbers=[]
+function showMessage(message: string): void {
+  console.log(message)
+}
 ```
 
 <!--v-->
@@ -47,16 +90,6 @@ function infiniteRec(): never {
 
 <!--v-->
 
-### void
-
-```ts data-line-numbers=[]
-function showMessage(message: string): void {
-  console.log(message)
-}
-```
-
-<!--v-->
-
 ### object
 
 object is a type that represents the non-primitive type
@@ -71,53 +104,6 @@ create(undefined) // Error
 create(42) // Error
 create('string') // Error
 create(false) // Error
-```
-
-<!--v-->
-
-### tuples
-
-```ts data-line-numbers=[]
-type Coordinate = [number, number, number?]
-
-const cord1 = [1, 2, 3]
-const cord2 = [1, 2]
-
-type Coordinate1 = [number, number, ...string[]]
-
-const cord3 = [1, 2, '3', '3', '3']
-```
-
-<!--v-->
-
-### arrays
-
-```ts data-line-numbers=[]
-const numbers = [1, 2, 3, 4, 5]
-
-type Guy = {age: number; name: string}
-
-const guys1: Guy[] = [
-  {name: 'alex', age: 22},
-  {name: 'john', age: 23},
-]
-
-const guys2: Array<Guy> = [
-  {name: 'alex', age: 22},
-  {name: 'john', age: 23},
-]
-```
-
-<!--v-->
-
-### arrays
-
-```ts data-line-numbers=[]
-function calculate(numbers: [string]): number
-
-function calculate(numbers: string[]): number
-
-function calculate(numbers: Array<string>): number
 ```
 
 <!--v-->
@@ -165,6 +151,57 @@ if (hasX(fooUnknown)) {
 const fooString = fooUnknown as string
 ```
 
+<!--s-->
+
+## Non-primitive types
+
+<!--v-->
+
+### tuples
+
+```ts data-line-numbers=[]
+type Coordinate = [number, number, number?]
+
+const cord1 = [1, 2, 3]
+const cord2 = [1, 2]
+
+type Coordinate1 = [number, number, ...string[]]
+
+const cord3 = [1, 2, '3', '3', '3']
+```
+
+<!--v-->
+
+### arrays
+
+```ts data-line-numbers=[]
+const numbers = [1, 2, 3, 4, 5]
+
+type Guy = {age: number; name: string}
+
+const guys1: Guy[] = [
+  {name: 'alex', age: 22},
+  {name: 'john', age: 23},
+]
+
+const guys2: Array<Guy> = [
+  {name: 'alex', age: 22},
+  {name: 'john', age: 23},
+]
+```
+
+<!--v-->
+
+### arrays (not empty)
+
+```ts data-line-numbers=[]
+function calculate(numbers: [string]): number
+
+function calculate(numbers: string[]): number
+
+function calculate(numbers: Array<string>): number
+```
+
 <!--v-->
 
 ### functions
@@ -196,7 +233,7 @@ function doSomething(f: Function) {
 
 ### enum
 
-#### string enum
+#### numeric enum
 
 ```ts data-line-numbers=[]
 enum Directions1 {
@@ -270,6 +307,7 @@ const enum EDirection {
   Left,
   Right,
 }
+console.log(EDirection.Up) // 0
 
 const ODirection = {
   Up: 0,
@@ -277,8 +315,6 @@ const ODirection = {
   Left: 2,
   Right: 3,
 } as const
-
-console.log(EDirection.Up) // 0
 
 console.log(ODirection) // { Up: 0, Down: 1, Left: 2, Right: 3 }
 console.log(ODirection.Up) // 0
@@ -316,9 +352,27 @@ const tree: Tree<number> = {
 tree.left.left.left.left.left.left.left.value
 ```
 
+<!--v-->
+
+### interfaces vs types
+
+When to use type:
+
+- when defining an alias for primitive types (string, boolean, number, etc)
+- when defining tuple types
+- when defining function types
+- when defining a union
+- when trying to overload functions in object types via composition
+- when needing to take advantage of mapped types
+
+When to use interface:
+
+- for all object types where using type is not required (see above)
+- when you want to take advantage of declaration merging.
+
 <!--s-->
 
-### logic operators
+## logic operators
 
 - union
 - intersection
@@ -361,7 +415,7 @@ showType({ id: 1, left: 'test', right: 'test' }) // {id: 1, left: "test", right:
 
 <!--s-->
 
-## Complex
+## Other features
 
 <!--v-->
 
@@ -497,6 +551,65 @@ type UnboxedString = UnboxArray<string> // string
 
 <!--s-->
 
+## Using js library without type declarations
+
+Solutions:
+
+- `npm i @types/untyped-module`
+- create and include declaration file
+
+<!--v-->
+
+### math.js
+
+```ts data-line-numbers=[]
+function sin(value) {
+  return Math.sin(value)
+}
+
+function cos(value) {
+  return Math.cos(value)
+}
+
+const pi = Math.pi
+
+function sum(a, b, c) {
+  return a + b + c
+}
+
+module.exports = {
+  sin,
+  cos,
+  pi,
+  sum,
+}
+```
+
+<!--v-->
+
+### math.d.ts
+
+```ts data-line-numbers=[]
+export declare function sin(value: number): number
+export declare function sum(a: number, b: number, c: number): number
+export declare const pi: string
+```
+
+<!--v-->
+
+### app.ts
+
+```ts data-line-numbers=[]
+import {sin, sum} from './math'
+
+sin(1) // Ok
+sin('1') // Argument of type 'string' is not assignable to parameter of type 'number'
+sum(1, 2, 3) // Ok
+sum(1, '2', 'd') // Argument of type 'string' is not assignable to parameter of type 'number'
+```
+
+<!--s-->
+
 ## utility types
 
 - Partial/Required
@@ -600,17 +713,27 @@ type Dictionary2 = Record<string, string | number>
 const dic3: Dictionary2 = {name: 'Garry', level: 4}
 ```
 
+<!--v-->
+
+### Where to read more
+
+- [utility types documentation](https://www.typescriptlang.org/docs/handbook/utility-types.html)
+- [utility types library](https://github.com/piotrwitek/utility-types)
+- [types challenges](https://github.com/type-challenges/type-challenges#challenges)
+
 <!--s-->
 
 ## Typescript issues
 
-- Same interfaces
+- Structural typing
+- Enum as number
 - Private is not private
 - Cloning
+- Mutations
 
 <!--v-->
 
-### Same interfaces
+### Structural typing
 
 ```ts data-line-numbers=[]
 interface Book {
@@ -639,6 +762,24 @@ buyBook(car) // no any issues with type cheking
 
 <!--v-->
 
+<!--v-->
+
+### Enum as number
+
+```ts data-line-numbers=[]
+enum TestEnum {
+  foo,
+}
+
+const testArg: number = 10
+
+function func(arg: TestEnum) {
+  console.log(arg)
+}
+
+func(testArg) // no warning
+```
+
 ### Private is not private
 
 ```ts data-line-numbers=[]
@@ -657,8 +798,6 @@ member.secret
 
 ### Cloning
 
-#### Project code
-
 ```ts data-line-numbers=[1,2,5,7,11,12|1,3,6,8,11,13]
 type Metadata = {}
 type UserMetadata = Record<string, Metadata>
@@ -672,17 +811,32 @@ console.log(cache.get('foo'))
 // somewhere in the project
 const cacheCopy: UserMetadata = {...cache}
 console.log(cacheCopy.foo)
-console.log(cacheCopy.get('foo'))
+console.log(cacheCopy.get('foo')) // runtime error
 ```
-
-<!--s-->
-
-# example
 
 <!--v-->
 
-### TOPIC
+### Mutation
 
 ```ts data-line-numbers=[]
-test
+type Cat = {meow: () => void}
+type Dog = {woof: () => void}
+const createCat = (): Cat => ({meow: () => console.log('Meow!')})
+const createDog = (): Dog => ({woof: () => console.log('Woof!')})
+
+const mutateAnimals = (animals: (Cat | Dog)[]) => animals.push(createDog())
+
+const cats: Cat[] = []
+mutateAnimals(cats)
+cats.forEach((cat) => cat.meow()) // Failed in runtime with cat.meow is not a function
 ```
+
+<!--v-->
+
+### Useful links
+
+- [why TS is bad](https://www.t.me/why_typescript_is_bad)
+- [TS issues](https://github.com/microsoft/TypeScript/issues)
+- [TS worship in UA outsourcing](https://www.youtube.com/watch?v=H9-F8uhKMRk)
+- [do's and don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
+- [best practices](https://blog.softwaremill.com/typescript-mistakes-to-avoid-d3ab240c90eb)

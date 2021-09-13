@@ -3,7 +3,6 @@
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type FIXME = any
-// type FIXME = Order['state']
 
 type Order =
   | {
