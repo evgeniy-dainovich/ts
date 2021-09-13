@@ -14,10 +14,11 @@ jobs:
 
       - name: Install Packages
         run: |
-          yarn install
+          npm install
       - name: Build
         run: |
-          npx reveal-md README.md --static dist
+          npm run build
+          cp reveal-md/favicon.ico dist/favicon.ico
       - name: Deploy
         # https://github.com/marketplace/actions/deploy-to-github-pages
         uses: JamesIves/github-pages-deploy-action@3.6.2

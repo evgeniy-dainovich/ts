@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx reveal-md README.md --static dist",
-    "dev": "reveal-md README.md",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx reveal-md README.md --static dist --assets-dir assets",
+    "dev": "reveal-md README.md --styles reveal-md/styles.css"
   },
   "author": "",
   "license": "ISC",
