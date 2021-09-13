@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./dist/reveal.css" />
     <link rel="stylesheet" href="./dist/theme/white.css" id="theme" />
     <link rel="stylesheet" href="./css/highlight/zenburn.css" />
-    <link rel="stylesheet" href="./_assets/.reveal-md/styles.css" />
+    <link rel="stylesheet" href="./assets/reveal-md/styles.css" />
 
     <script>
       document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>');
@@ -17,11 +17,44 @@
   </head>
   <body>
     <div class="reveal">
-      <div class="slides"><section ><section data-markdown><script type="text/template">## Basic
+      <div class="slides"><section ><section data-markdown><script type="text/template">## Typescript
 
 </script></section><section data-markdown><script type="text/template">
 
-### basic types
+### About speaker
+
+My name is Evgeniy Dainovich
+
+Skype: nukink
+
+Presentation and code is located here: [https://evgeniy-dainovich.github.io/ts/](https://evgeniy-dainovich.github.io/ts/)
+
+</script></section></section><section ><section data-markdown><script type="text/template">
+
+## What is TypeScript?
+
+</script></section><section data-markdown><script type="text/template">
+
+### TypeScript is JavaScript with syntax for types.
+
+- Voted 2nd most loved programming language in the [Stack Overflow 2020 Developer survey](https://insights.stackoverflow.com/survey/2020#most-loved-dreaded-and-wanted)
+
+- TypeScript was used by 78% of the [2020 State of JS](https://2020.stateofjs.com/en-US/technologies/javascript-flavors/) respondents, with 93% saying they would use it again.
+
+</script></section><section data-markdown><script type="text/template">
+
+## Useful links
+
+- [Official documentation](https://www.typescriptlang.org/docs/)
+- [Playground](https://www.typescriptlang.org/play)
+
+</script></section></section><section ><section data-markdown><script type="text/template">
+
+## Primitive types
+
+</script></section><section data-markdown><script type="text/template">
+
+### String, number, boolean
 
 ```ts data-line-numbers=[]
 const age: number = 12
@@ -30,6 +63,16 @@ const isAdult: boolean = false
 
 type PaperName = string
 function collect(paper: PaperName): void {}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### void
+
+```ts data-line-numbers=[]
+function showMessage(message: string): void {
+  console.log(message)
+}
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -66,16 +109,6 @@ function infiniteRec(): never {
 
 </script></section><section data-markdown><script type="text/template">
 
-### void
-
-```ts data-line-numbers=[]
-function showMessage(message: string): void {
-  console.log(message)
-}
-```
-
-</script></section><section data-markdown><script type="text/template">
-
 ### object
 
 object is a type that represents the non-primitive type
@@ -90,53 +123,6 @@ create(undefined) // Error
 create(42) // Error
 create('string') // Error
 create(false) // Error
-```
-
-</script></section><section data-markdown><script type="text/template">
-
-### tuples
-
-```ts data-line-numbers=[]
-type Coordinate = [number, number, number?]
-
-const cord1 = [1, 2, 3]
-const cord2 = [1, 2]
-
-type Coordinate1 = [number, number, ...string[]]
-
-const cord3 = [1, 2, '3', '3', '3']
-```
-
-</script></section><section data-markdown><script type="text/template">
-
-### arrays
-
-```ts data-line-numbers=[]
-const numbers = [1, 2, 3, 4, 5]
-
-type Guy = {age: number; name: string}
-
-const guys1: Guy[] = [
-  {name: 'alex', age: 22},
-  {name: 'john', age: 23},
-]
-
-const guys2: Array<Guy> = [
-  {name: 'alex', age: 22},
-  {name: 'john', age: 23},
-]
-```
-
-</script></section><section data-markdown><script type="text/template">
-
-### arrays
-
-```ts data-line-numbers=[]
-function calculate(numbers: [string]): number
-
-function calculate(numbers: string[]): number
-
-function calculate(numbers: Array<string>): number
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -184,6 +170,57 @@ if (hasX(fooUnknown)) {
 const fooString = fooUnknown as string
 ```
 
+</script></section></section><section ><section data-markdown><script type="text/template">
+
+## Non-primitive types
+
+</script></section><section data-markdown><script type="text/template">
+
+### tuples
+
+```ts data-line-numbers=[]
+type Coordinate = [number, number, number?]
+
+const cord1 = [1, 2, 3]
+const cord2 = [1, 2]
+
+type Coordinate1 = [number, number, ...string[]]
+
+const cord3 = [1, 2, '3', '3', '3']
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### arrays
+
+```ts data-line-numbers=[]
+const numbers = [1, 2, 3, 4, 5]
+
+type Guy = {age: number; name: string}
+
+const guys1: Guy[] = [
+  {name: 'alex', age: 22},
+  {name: 'john', age: 23},
+]
+
+const guys2: Array<Guy> = [
+  {name: 'alex', age: 22},
+  {name: 'john', age: 23},
+]
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### arrays (not empty)
+
+```ts data-line-numbers=[]
+function calculate(numbers: [string]): number
+
+function calculate(numbers: string[]): number
+
+function calculate(numbers: Array<string>): number
+```
+
 </script></section><section data-markdown><script type="text/template">
 
 ### functions
@@ -215,7 +252,7 @@ function doSomething(f: Function) {
 
 ### enum
 
-#### string enum
+#### numeric enum
 
 ```ts data-line-numbers=[]
 enum Directions1 {
@@ -289,6 +326,7 @@ const enum EDirection {
   Left,
   Right,
 }
+console.log(EDirection.Up) // 0
 
 const ODirection = {
   Up: 0,
@@ -296,8 +334,6 @@ const ODirection = {
   Left: 2,
   Right: 3,
 } as const
-
-console.log(EDirection.Up) // 0
 
 console.log(ODirection) // { Up: 0, Down: 1, Left: 2, Right: 3 }
 console.log(ODirection.Up) // 0
@@ -335,9 +371,27 @@ const tree: Tree<number> = {
 tree.left.left.left.left.left.left.left.value
 ```
 
+</script></section><section data-markdown><script type="text/template">
+
+### interfaces vs types
+
+When to use type:
+
+- when defining an alias for primitive types (string, boolean, number, etc)
+- when defining tuple types
+- when defining function types
+- when defining a union
+- when trying to overload functions in object types via composition
+- when needing to take advantage of mapped types
+
+When to use interface:
+
+- for all object types where using type is not required (see above)
+- when you want to take advantage of declaration merging.
+
 </script></section></section><section ><section data-markdown><script type="text/template">
 
-### logic operators
+## logic operators
 
 - union
 - intersection
@@ -380,7 +434,7 @@ showType({ id: 1, left: 'test', right: 'test' }) // {id: 1, left: "test", right:
 
 </script></section></section><section ><section data-markdown><script type="text/template">
 
-## Complex
+## Other features
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -516,6 +570,65 @@ type UnboxedString = UnboxArray<string> // string
 
 </script></section></section><section ><section data-markdown><script type="text/template">
 
+## Using js library without type declarations
+
+Solutions:
+
+- `npm i @types/untyped-module`
+- create and include declaration file
+
+</script></section><section data-markdown><script type="text/template">
+
+### math.js
+
+```ts data-line-numbers=[]
+function sin(value) {
+  return Math.sin(value)
+}
+
+function cos(value) {
+  return Math.cos(value)
+}
+
+const pi = Math.pi
+
+function sum(a, b, c) {
+  return a + b + c
+}
+
+module.exports = {
+  sin,
+  cos,
+  pi,
+  sum,
+}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### math.d.ts
+
+```ts data-line-numbers=[]
+export declare function sin(value: number): number
+export declare function sum(a: number, b: number, c: number): number
+export declare const pi: string
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### app.ts
+
+```ts data-line-numbers=[]
+import {sin, sum} from './math'
+
+sin(1) // Ok
+sin('1') // Argument of type 'string' is not assignable to parameter of type 'number'
+sum(1, 2, 3) // Ok
+sum(1, '2', 'd') // Argument of type 'string' is not assignable to parameter of type 'number'
+```
+
+</script></section></section><section ><section data-markdown><script type="text/template">
+
 ## utility types
 
 - Partial/Required
@@ -619,17 +732,27 @@ type Dictionary2 = Record<string, string | number>
 const dic3: Dictionary2 = {name: 'Garry', level: 4}
 ```
 
+</script></section><section data-markdown><script type="text/template">
+
+### Where to read more
+
+- [utility types documentation](https://www.typescriptlang.org/docs/handbook/utility-types.html)
+- [utility types library](https://github.com/piotrwitek/utility-types)
+- [types challenges](https://github.com/type-challenges/type-challenges#challenges)
+
 </script></section></section><section ><section data-markdown><script type="text/template">
 
 ## Typescript issues
 
-- Same interfaces
+- Structural typing
+- Enum as number
 - Private is not private
 - Cloning
+- Mutations
 
 </script></section><section data-markdown><script type="text/template">
 
-### Same interfaces
+### Structural typing
 
 ```ts data-line-numbers=[]
 interface Book {
@@ -658,6 +781,24 @@ buyBook(car) // no any issues with type cheking
 
 </script></section><section data-markdown><script type="text/template">
 
+</script></section><section data-markdown><script type="text/template">
+
+### Enum as number
+
+```ts data-line-numbers=[]
+enum TestEnum {
+  foo,
+}
+
+const testArg: number = 10
+
+function func(arg: TestEnum) {
+  console.log(arg)
+}
+
+func(testArg) // no warning
+```
+
 ### Private is not private
 
 ```ts data-line-numbers=[]
@@ -676,8 +817,6 @@ member.secret
 
 ### Cloning
 
-#### Project code
-
 ```ts data-line-numbers=[1,2,5,7,11,12|1,3,6,8,11,13]
 type Metadata = {}
 type UserMetadata = Record<string, Metadata>
@@ -691,20 +830,35 @@ console.log(cache.get('foo'))
 // somewhere in the project
 const cacheCopy: UserMetadata = {...cache}
 console.log(cacheCopy.foo)
-console.log(cacheCopy.get('foo'))
+console.log(cacheCopy.get('foo')) // runtime error
 ```
-
-</script></section></section><section ><section data-markdown><script type="text/template">
-
-# example
 
 </script></section><section data-markdown><script type="text/template">
 
-### TOPIC
+### Mutation
 
 ```ts data-line-numbers=[]
-test
+type Cat = {meow: () => void}
+type Dog = {woof: () => void}
+const createCat = (): Cat => ({meow: () => console.log('Meow!')})
+const createDog = (): Dog => ({woof: () => console.log('Woof!')})
+
+const mutateAnimals = (animals: (Cat | Dog)[]) => animals.push(createDog())
+
+const cats: Cat[] = []
+mutateAnimals(cats)
+cats.forEach((cat) => cat.meow()) // Failed in runtime with cat.meow is not a function
 ```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Useful links
+
+- [why TS is bad](https://www.t.me/why_typescript_is_bad)
+- [TS issues](https://github.com/microsoft/TypeScript/issues)
+- [TS worship in UA outsourcing](https://www.youtube.com/watch?v=H9-F8uhKMRk)
+- [do's and don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
+- [best practices](https://blog.softwaremill.com/typescript-mistakes-to-avoid-d3ab240c90eb)
 </script></section></section></div>
     </div>
 
