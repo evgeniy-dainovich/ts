@@ -175,7 +175,7 @@ const cord3 = [1, 2, '3', '3', '3']
 ### arrays
 
 ```ts data-line-numbers=[]
-const numbers = [1, 2, 3, 4, 5]
+const numbers: number[] = [1, 2, 3, 4, 5]
 
 type Guy = {age: number; name: string}
 
@@ -438,7 +438,7 @@ type NotificationMessage = `${NotificationObject} ${NotificationOperation}`
 ```ts data-line-numbers=[]
 function padLeft(value: string, padding: string | number) {
   if (typeof padding === 'number') {
-    return Array(padding + 1).join(' ') + value
+    return ' '.repeat(padding) + value
   }
   if (typeof padding === 'string') {
     return padding + value
@@ -448,6 +448,7 @@ function padLeft(value: string, padding: string | number) {
 
 padLeft('hero', '*') // *hero
 padLeft('hero', 2) // __hero
+padLeft('hero', {} as string) // Runtime Error: Expected string or number'
 ```
 
 <!--v-->
@@ -457,16 +458,25 @@ padLeft('hero', 2) // __hero
 #### by checking with guard
 
 ```ts data-line-numbers=[]
-function isNumber(x: any): x is number {
-  return typeof x === 'number'
+interface Fish {
+  swim(): void
 }
 
-let something = '1234'
-let value = 5
-
-if (isNumber(something)) {
-  value = something
+interface Bird {
+  fly(): void
 }
+
+function getRandomPet(): Bird | Fish {}
+
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined
+}
+
+function move(pet) {
+  isFish(pet) ? pet.swim() : pet.fly()
+}
+const pet = getRandomPet()
+move(pet)
 ```
 
 <!--v-->
@@ -762,8 +772,6 @@ buyBook(car) // no any issues with type cheking
 
 <!--v-->
 
-<!--v-->
-
 ### Enum as number
 
 ```ts data-line-numbers=[]
@@ -779,6 +787,8 @@ function func(arg: TestEnum) {
 
 func(testArg) // no warning
 ```
+
+<!--v-->
 
 ### Private is not private
 

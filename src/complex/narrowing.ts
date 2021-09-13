@@ -24,7 +24,7 @@ move(birdOrFish)
 // ex 2
 function padLeft(value: string, padding: string | number) {
   if (typeof padding === 'number') {
-    return Array(padding + 1).join(' ') + value
+    return ' '.repeat(padding) + value
   }
   if (typeof padding === 'string') {
     return padding + value
@@ -34,6 +34,7 @@ function padLeft(value: string, padding: string | number) {
 
 padLeft('hero', '*') // *hero
 padLeft('hero', 2) // __hero
+padLeft('hero', {} as string) // Runtime error: Expected string or number, got '[object Object]'
 
 // Since nullable types are implemented with a union, you need to use a type guard to get rid of the null.
 // Fortunately, this is the same code you’d write in JavaScript:
@@ -74,12 +75,7 @@ function isFish(pet: Fish | Bird): pet is Fish {
 const pet = getSmallPet()
 function move2() {
   // Both calls to 'swim' and 'fly' are now okay.
-
-  if (isFish(pet)) {
-    pet.swim()
-  } else {
-    pet.fly()
-  }
+  isFish(pet) ? pet.swim() : pet.fly()
 }
 
 // extra materials
