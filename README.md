@@ -8,7 +8,9 @@ My name is Evgeniy Dainovich
 
 Skype: nukink
 
-Presentation and code is located here: [https://evgeniy-dainovich.github.io/ts/](https://evgeniy-dainovich.github.io/ts/)
+Presentation: [https://evgeniy-dainovich.github.io/ts/](https://evgeniy-dainovich.github.io/ts/)
+
+Repository: [https://github.com/evgeniy-dainovich/ts](https://github.com/evgeniy-dainovich/ts)
 
 <!--s-->
 
