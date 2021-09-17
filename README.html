@@ -169,7 +169,8 @@ if (hasX(fooUnknown)) {
   fooUnknown.x.prop
 }
 
-const fooString = fooUnknown as string
+// We can also just convince TypeScript we know what we're doing by using a type assertion.
+upperCase(fooUnknown as string)
 ```
 
 </script></section></section><section ><section data-markdown><script type="text/template">
@@ -183,12 +184,12 @@ const fooString = fooUnknown as string
 ```ts data-line-numbers=[]
 type Coordinate = [number, number, number?]
 
-const cord1 = [1, 2, 3]
-const cord2 = [1, 2]
+const cord1: Coordinate = [1, 2, 3]
+const cord2: Coordinate = [1, 2]
 
 type Coordinate1 = [number, number, ...string[]]
 
-const cord3 = [1, 2, '3', '3', '3']
+const cord3: Coordinate1 = [1, 2, '3', '3', '3']
 ```
 
 </script></section><section data-markdown><script type="text/template">
