@@ -92,16 +92,6 @@ function collect(paper: PaperName): void {}
 
 <!--v-->
 
-### void
-
-```ts data-line-numbers=[]
-function showMessage(message: string): void {
-  console.log(message)
-}
-```
-
-<!--v-->
-
 ### any
 
 ```ts data-line-numbers=[]
@@ -112,24 +102,6 @@ function stringToUpperCase(x: string) {
 }
 
 stringToUpperCase(a as any) // no error with any
-```
-
-<!--v-->
-
-### never
-
-```ts data-line-numbers=[]
-function error(message: string): never {
-  throw new Error(message)
-}
-
-function infiniteLoop(): never {
-  while (true) {}
-}
-
-function infiniteRec(): never {
-  return infiniteRec()
-}
 ```
 
 <!--v-->
@@ -148,6 +120,34 @@ create(undefined) // Error
 create(42) // Error
 create('string') // Error
 create(false) // Error
+```
+
+<!--v-->
+
+### void
+
+```ts data-line-numbers=[]
+function showMessage(message: string): void {
+  console.log(message)
+}
+```
+
+<!--v-->
+
+### never
+
+```ts data-line-numbers=[]
+function error(message: string): never {
+  throw new Error(message)
+}
+
+function infiniteLoop(): never {
+  while (true) {}
+}
+
+function infiniteRec(): never {
+  return infiniteRec()
+}
 ```
 
 <!--v-->
@@ -196,6 +196,124 @@ if (hasX(fooUnknown)) {
 upperCase(fooUnknown as string)
 ```
 
+<!--s-->
+
+## Types & Interfaces
+
+<!--v-->
+
+### type
+
+Can't be re-opened or changed after being declared
+
+```ts data-line-numbers=[]
+type StringType = string
+
+type TupleType = [string, string, string]
+
+type ConsoleLogType = (smth: string) => void
+
+type OnlyBools = {
+  [key: string]: boolean
+}
+
+const conforms: OnlyBools = {
+  del: true,
+  rodney: false,
+}
+```
+
+<!--v-->
+
+### type
+
+#### union
+
+```ts data-line-numbers=[]
+type UnionType1 = string | number
+
+function showType(arg: UnionType1) {
+  console.log(arg)
+}
+
+showType('test') // test
+showType(7) // 7
+
+type UnionType2 = {a: string} | {b: number}
+const ut21: UnionType2 = {a: ''}
+const ut22: UnionType2 = {b: 3}
+```
+
+<!--v-->
+
+### type
+
+#### intersection
+
+```ts data-line-numbers=[]
+type LeftType = { id: number left: string }
+type RightType = { id: number right: string }
+
+type IntersectionType = LeftType & RightType
+
+function showType(args: IntersectionType) {
+  console.log(args)
+}
+
+showType({ id: 1, left: 'test', right: 'test' }) // {id: 1, left: "test", right: "test"}
+```
+
+<!--v-->
+
+### interfaces
+
+#### extending
+
+```ts data-line-numbers=[]
+interface Animal {
+  name: string
+}
+
+interface Bear extends Animal {
+  honey: boolean
+}
+```
+
+<!--v-->
+
+### interfaces
+
+#### declaration merging
+
+```ts data-line-numbers=[]
+interface Window {
+  title: string
+}
+
+interface Window {
+  ts: import('typescript')
+}
+
+const src = 'const a = "Hello World"'
+window.ts.transpileModule(src, {})
+```
+
+<!--v-->
+
+### interfaces vs types
+
+When to use type:
+
+- when defining an alias for primitive types (string, boolean, number, etc)
+- when need to use union or intersection
+- when defining tuple types
+- when defining function types
+- when needing to take advantage of mapped types
+
+When to use interface:
+
+- for all object types where using type is not required (see above)
+- when you want to take advantage of declaration merging
 <!--s-->
 
 ## Non-primitive types
@@ -336,88 +454,9 @@ let directions = [
 */
 ```
 
-<!--v-->
-
-### enum
-
-#### objects vs enums
-
-as const (const assertion) – used for strings makes them literals, object literals get readonly properties, array literals become readonly tuples
-
-```ts data-line-numbers=[]
-// objects vs enums
-const enum EDirection {
-  Up,
-  Down,
-  Left,
-  Right,
-}
-console.log(EDirection.Up) // 0
-
-const ODirection = {
-  Up: 0,
-  Down: 1,
-  Left: 2,
-  Right: 3,
-} as const
-
-console.log(ODirection) // { Up: 0, Down: 1, Left: 2, Right: 3 }
-console.log(ODirection.Up) // 0
-```
-
-<!--v-->
-
-### generic
-
-```ts data-line-numbers=[]
-type Container<T> = {value: T}
-
-// Type 'string' is not assignable to type 'number'
-const container1: Container<number> = {value: '344'}
-const container2: Container<number> = {value: 344}
-```
-
-<!--v-->
-
-### generic
-
-```ts data-line-numbers=[]
-type Tree<T> = {
-  value: T
-  left: Tree<T>
-  right: Tree<T>
-}
-
-const tree: Tree<number> = {
-  value: 4,
-  left: {} as Tree<number>,
-  right: {} as Tree<number>,
-}
-
-tree.left.left.left.left.left.left.left.value
-```
-
-<!--v-->
-
-### interfaces vs types
-
-When to use type:
-
-- when defining an alias for primitive types (string, boolean, number, etc)
-- when defining tuple types
-- when defining function types
-- when defining a union
-- when trying to overload functions in object types via composition
-- when needing to take advantage of mapped types
-
-When to use interface:
-
-- for all object types where using type is not required (see above)
-- when you want to take advantage of declaration merging.
-
 <!--s-->
 
-## OOP
+## OOP in TS
 
 <!--v-->
 
@@ -524,7 +563,7 @@ console.log(Circle.calculateArea(5))
 
 <!--v-->
 
-### protected, extends
+### protected
 
 ```ts data-line-numbers=[]
 class Person {
@@ -578,61 +617,84 @@ rabbit.move() // jump
 
 <!--s-->
 
-## logic operators
-
-- union
-- intersection
-
-<!--v-->
-
-### union
-
-```ts data-line-numbers=[]
-type UnionType1 = string | number
-
-function showType(arg: UnionType1) {
-  console.log(arg)
-}
-
-showType('test') // test
-showType(7) // 7
-
-type UnionType2 = {a: string} | {b: number}
-const ut21: UnionType2 = {a: ''}
-const ut22: UnionType2 = {b: 3}
-```
-
-<!--v-->
-
-### intersection
-
-```ts data-line-numbers=[]
-type LeftType = { id: number left: string }
-type RightType = { id: number right: string }
-
-type IntersectionType = LeftType & RightType
-
-function showType(args: IntersectionType) {
-  console.log(args)
-}
-
-showType({ id: 1, left: 'test', right: 'test' }) // {id: 1, left: "test", right: "test"}
-```
-
-<!--s-->
-
 ## Other features
 
 <!--v-->
 
-### template literal
+### generic
 
 ```ts data-line-numbers=[]
-type NotificationObject = 'user' | 'host'
-type NotificationOperation = 'changed' | 'deleted'
+type Container<T> = {value: T}
 
-// "user changed" | "user deleted" | "host changed" | "host deleted"
-type NotificationMessage = `${NotificationObject} ${NotificationOperation}`
+// Type 'string' is not assignable to type 'number'
+const container1: Container<number> = {value: '344'}
+const container2: Container<number> = {value: 344}
+```
+
+<!--v-->
+
+### generic
+
+```ts data-line-numbers=[]
+type Tree<T> = {
+  value: T
+  left: Tree<T>
+  right: Tree<T>
+}
+
+const tree: Tree<number> = {
+  value: 4,
+  left: {} as Tree<number>,
+  right: {} as Tree<number>,
+}
+
+tree.left.left.left.left.left.left.left.value
+```
+
+<!--v-->
+
+### complex interfaces
+
+```ts data-line-numbers=[]
+interface ComplexInterface {
+  readonly id: ID
+  readonly passportData: PassportData
+  name?: string
+  coordinates: Coordinates
+}
+
+type ID = string | number
+
+type PassportData = {
+  number: string
+  expiresAt: string
+}
+
+interface Coordinates {
+  lng: string
+  lat: string
+}
+```
+
+<!--v-->
+
+### lookup types
+
+```ts data-line-numbers=[]
+interface Person {
+  name: string
+  location: string
+  coords: {
+    lng: string
+    lat: string
+  }
+}
+
+// We can also rename fields and fields below will autorename too (except union types)
+
+type PersonKey = keyof Person // "name" | "location" | "coords"
+type Name = Person['name'] // string
+type Coords = Person['coords'] // {lng: string; lat: string}
 ```
 
 <!--v-->
@@ -687,23 +749,14 @@ move(pet)
 
 <!--v-->
 
-### lookup types
+### template literal
 
 ```ts data-line-numbers=[]
-interface Person {
-  name: string
-  location: string
-  coords: {
-    lng: string
-    lat: string
-  }
-}
+type NotificationObject = 'user' | 'host'
+type NotificationOperation = 'changed' | 'deleted'
 
-// We can also rename fields and fields below will autorename too (except union types)
-
-type PersonKey = keyof Person // "name" | "location" | "coords"
-type Name = Person['name'] // string
-type Coords = Person['coords'] // {lng: string; lat: string}
+// "user changed" | "user deleted" | "host changed" | "host deleted"
+type NotificationMessage = `${NotificationObject} ${NotificationOperation}`
 ```
 
 <!--v-->
@@ -730,44 +783,22 @@ let jeremy = new Person('Jeremy Bearimy')
 jeremy.#name
 ```
 
-<!--v-->
-
-### infer
-
-#### example 1
-
-```ts data-line-numbers=[]
-type IsNumber<T> = T extends number ? 'number' : 'other'
-
-type WithNumber = IsNumber<number> // number
-type WithOther = IsNumber<string> // other
-
-type IsArray<T> = T extends Array<any> ? 'array' : 'other'
-
-type WithArray = IsArray<string[]> // array
-type WithoutArray = IsArray<string> // other
-```
-
-<!--v-->
-
-### infer
-
-#### example 2
-
-```ts data-line-numbers=[]
-type UnboxArray<T> = T extends Array<infer Item> ? Item : T
-
-type UnboxedStringArray = UnboxArray<string[]> // string
-type UnboxedNumberArray = UnboxArray<number[]> // number
-
-type Auto = {maxSpeed: number}
-type UnboxedAutoArray = UnboxArray<Auto[]> // { maxSpeed: number }
-type UnboxedString = UnboxArray<string> // string
-```
-
 <!--s-->
 
 ## Using js library without type declarations
+
+<!--v-->
+
+### app.ts
+
+```ts data-line-numbers=[]
+// Could not find a declaration file for module 'right-pad'.
+// 'node_modules/right-pad/rightpad.js' implicitly has an 'any' type.
+
+import rightPad from 'right-pad'
+```
+
+<!--v-->
 
 Solutions:
 
@@ -776,39 +807,12 @@ Solutions:
 
 <!--v-->
 
-### math.js
+### right-pad.d.ts
 
 ```ts data-line-numbers=[]
-function sin(value) {
-  return Math.sin(value)
+declare module 'right-pad' {
+  export default function rightPad(arg: string): string
 }
-
-function cos(value) {
-  return Math.cos(value)
-}
-
-const pi = Math.pi
-
-function sum(a, b, c) {
-  return a + b + c
-}
-
-module.exports = {
-  sin,
-  cos,
-  pi,
-  sum,
-}
-```
-
-<!--v-->
-
-### math.d.ts
-
-```ts data-line-numbers=[]
-export declare function sin(value: number): number
-export declare function sum(a: number, b: number, c: number): number
-export declare const pi: string
 ```
 
 <!--v-->
@@ -816,25 +820,62 @@ export declare const pi: string
 ### app.ts
 
 ```ts data-line-numbers=[]
-import {sin, sum} from './math'
+import rightPad from 'right-pad'
 
-sin(1) // Ok
-sin('1') // Argument of type 'string' is not assignable to parameter of type 'number'
-sum(1, 2, 3) // Ok
-sum(1, '2', 'd') // Argument of type 'string' is not assignable to parameter of type 'number'
+rightPad(3) // Argument of type 'number' is not assignable to parameter of type 'string'.
+rightPad('3') // Ok
 ```
 
 <!--s-->
 
 ## utility types
 
+- Record
+- Readonly
 - Partial/Required
 - Pick/Omit
 - Exclude/Extract
-- Readonly
-- Record
 - ReturnType
 - stringManipulation
+
+<!--v-->
+
+### Record
+
+```ts data-line-numbers=[]
+type Dictionary1 = {[key: string]: string | number}
+
+const dic1: Dictionary1 = {}
+const dic2: Dictionary1 = {name: 'Garry', level: 3}
+
+type Dictionary2 = Record<string, string | number>
+
+const dic3: Dictionary2 = {name: 'Garry', level: 4}
+```
+
+<!--v-->
+
+### Readonly
+
+```ts data-line-numbers=[]
+type AdvanceFigure = {
+  width: number
+  height: number
+  coords: {
+    x: number
+    y: number
+  }
+}
+
+const readonlyAdvFigure: Readonly<AdvanceFigure> = {
+  width: 10,
+  height: 10,
+  coords: {x: 10, y: 10},
+}
+
+readonlyAdvFigure.width = 25 // Cannot assign to 'width' because it is a read-only property
+readonlyAdvFigure.coords.x = 25 // no error
+```
 
 <!--v-->
 
@@ -888,45 +929,6 @@ type PersonalUserInfo = Exclude<UserInfo, {address: string}>
 
 // { age: string; name: string } | { name: string }
 type UserWithName = Extract<UserInfo, {name: string}>
-```
-
-<!--v-->
-
-### Readonly
-
-```ts data-line-numbers=[]
-type AdvanceFigure = {
-  width: number
-  height: number
-  coords: {
-    x: number
-    y: number
-  }
-}
-
-const readonlyAdvFigure: Readonly<AdvanceFigure> = {
-  width: 10,
-  height: 10,
-  coords: {x: 10, y: 10},
-}
-
-readonlyAdvFigure.width = 25 // Cannot assign to 'width' because it is a read-only property
-readonlyAdvFigure.coords.x = 25 // no error
-```
-
-<!--v-->
-
-### Record
-
-```ts data-line-numbers=[]
-type Dictionary1 = {[key: string]: string | number}
-
-const dic1: Dictionary1 = {}
-const dic2: Dictionary1 = {name: 'Garry', level: 3}
-
-type Dictionary2 = Record<string, string | number>
-
-const dic3: Dictionary2 = {name: 'Garry', level: 4}
 ```
 
 <!--v-->
