@@ -1,6 +1,6 @@
 // ts v.3.8
 
-class Person {
+class Someone {
   #name: string
 
   constructor(name: string) {
@@ -12,7 +12,7 @@ class Person {
   }
 }
 
-let jeremy = new Person('Jeremy Bearimy')
+let jeremy = new Someone('Jeremy Bearimy')
 
 // Property '#name' is not accessible outside class 'Person' because it has a private identifier.
 jeremy.#name

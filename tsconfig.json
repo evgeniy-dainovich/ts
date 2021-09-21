@@ -4,7 +4,7 @@
     "allowJs": true,
     "esModuleInterop": true,
     "lib": ["es2019", "dom"],
-    "module": "ES6",
+    "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,

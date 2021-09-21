@@ -53,7 +53,7 @@ Repository: [https://github.com/evgeniy-dainovich/ts](https://github.com/evgeniy
     "allowJs": true,
     "esModuleInterop": true,
     "lib": ["es2019", "dom"],
-    "module": "es6",
+    "module": "commonjs",
     "moduleResolution": "node",
     "rootDir": "src",
     "sourceMap": true,
@@ -414,6 +414,167 @@ When to use interface:
 
 - for all object types where using type is not required (see above)
 - when you want to take advantage of declaration merging.
+
+<!--s-->
+
+## OOP
+
+<!--v-->
+
+### JS class
+
+```ts data-line-numbers=[]
+class Greeter {
+  constructor(message) {
+    this.greeting = message
+  }
+
+  greet() {
+    console.log(`Hello, ${this.greeting}`)
+  }
+}
+
+const greeter = new Greeter('world')
+```
+
+<!--v-->
+
+### readonly
+
+```ts data-line-numbers=[]
+class Greeter {
+  readonly greeting: string
+
+  constructor(message: string) {
+    this.greeting = message
+  }
+
+  greet() {
+    console.log(`Hello, ${this.greeting}`)
+  }
+}
+
+const greeter = new Greeter('world')
+
+console.log(greeter.greeting)
+greeter.greeting = 'sun' // Cannot assign to 'greeting' because it is a read-only property.
+```
+
+<!--v-->
+
+### private
+
+```ts data-line-numbers=[]
+class Greeter {
+  private readonly greeting: string
+
+  constructor(message: string) {
+    this.greeting = message
+  }
+
+  greet() {
+    console.log(`Hello, ${this.greeting}`)
+  }
+}
+
+const greeter = new Greeter('world')
+console.log(greeter.greeting) // Property 'greeting' is private
+```
+
+<!--v-->
+
+### implements Interface
+
+```ts data-line-numbers=[]
+interface GreeterInterface {
+  greet(appeal: string): void
+}
+
+class Greeter implements GreeterInterface {
+  private readonly greeting: string
+
+  constructor(message: string) {
+    this.greeting = message
+  }
+
+  greet(appeal: string) {
+    console.log(`Hello, ${this.greeting} from ${appeal}`)
+  }
+}
+
+const greeter = new Greeter('world')
+```
+
+<!--v-->
+
+### static
+
+```ts data-line-numbers=[]
+class Circle {
+  static pi: number = 3.14
+
+  static calculateArea(radius: number) {
+    return this.pi * radius * radius
+  }
+}
+
+console.log(Circle.pi)
+console.log(Circle.calculateArea(5))
+```
+
+<!--v-->
+
+### protected, extends
+
+```ts data-line-numbers=[]
+class Person {
+  protected name: string
+  constructor(name: string) {
+    this.name = name
+  }
+}
+
+class Employee extends Person {
+  private department: string
+
+  constructor(name: string, department: string) {
+    super(name)
+    this.department = department
+  }
+
+  getElevatorPitch() {
+    return `Hello, my name is ${this.name} and I work in ${this.department}.`
+  }
+}
+
+const howard = new Employee('Howard', 'Sales')
+console.log(howard.getElevatorPitch())
+console.log(howard.name) // Property 'name' is protected
+```
+
+<!--v-->
+
+### abstract
+
+```ts data-line-numbers=[]
+abstract class Animal {
+  move(): void {
+    console.log('roaming the earth...')
+  }
+}
+
+const animal = new Animal() // Cannot create an instance of an abstract class.
+
+class Rabbit implements Animal {
+  move(): void {
+    console.log('jump')
+  }
+}
+
+const rabbit = new Rabbit() // OK
+
+rabbit.move() // jump
+```
 
 <!--s-->
 

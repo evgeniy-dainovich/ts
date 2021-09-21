@@ -1,4 +1,4 @@
-interface Person {
+interface Someone {
   name: string
   age: number
   location: string
@@ -10,7 +10,7 @@ interface Person {
 
 // We can also rename fields and fields below will autorename too (except union types)
 
-type PersonKey = keyof Person // "name" | "age" | "location" | "coords"
-type Name = Person['name'] // string
-type NameOrAge = Person['name' | 'age'] // string | number
-type Coords = Person['coords'] // {lng: string; lat: string}
+type MapUserKey = keyof Someone // "name" | "age" | "location" | "coords"
+type Name = Someone['name'] // string
+type NameOrAge = Someone['name' | 'age'] // string | number
+type Coords = Someone['coords'] // {lng: string; lat: string}
