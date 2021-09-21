@@ -37,7 +37,7 @@ Repository: [https://github.com/evgeniy-dainovich/ts](https://github.com/evgeniy
 
 </script></section><section data-markdown><script type="text/template">
 
-### TypeScript is JavaScript with syntax for types.
+### TypeScript is JavaScript with syntax for types
 
 - Voted 2nd most loved programming language in the [Stack Overflow 2020 Developer survey](https://insights.stackoverflow.com/survey/2020#most-loved-dreaded-and-wanted)
 
@@ -45,10 +45,52 @@ Repository: [https://github.com/evgeniy-dainovich/ts](https://github.com/evgeniy
 
 </script></section><section data-markdown><script type="text/template">
 
+### Run .ts files with node
+
+- `npm install -g typescript tsc`
+- `tsc --init`
+- create `filename.ts` file
+- `tsc filename.ts`
+- `node filename.js`
+
+</script></section><section data-markdown><script type="text/template">
+
+### Run .ts files with ts-node
+
+- `npm install -D typescript ts-node`
+- create tsconfig.json file with required settings
+- create `filename.ts` file
+- `npx ts-node filename.ts`
+
+</script></section><section data-markdown><script type="text/template">
+
+### tsconfig.json
+
+```json data-line-numbers=[]
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "lib": ["es2019", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2019"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/**/math.js"]
+}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
 ## Useful links
 
 - [Official documentation](https://www.typescriptlang.org/docs/)
 - [Playground](https://www.typescriptlang.org/play)
+- [tsconfig options](https://www.typescriptlang.org/tsconfig)
 
 </script></section></section><section ><section data-markdown><script type="text/template">
 
@@ -69,16 +111,6 @@ function collect(paper: PaperName): void {}
 
 </script></section><section data-markdown><script type="text/template">
 
-### void
-
-```ts data-line-numbers=[]
-function showMessage(message: string): void {
-  console.log(message)
-}
-```
-
-</script></section><section data-markdown><script type="text/template">
-
 ### any
 
 ```ts data-line-numbers=[]
@@ -89,24 +121,6 @@ function stringToUpperCase(x: string) {
 }
 
 stringToUpperCase(a as any) // no error with any
-```
-
-</script></section><section data-markdown><script type="text/template">
-
-### never
-
-```ts data-line-numbers=[]
-function error(message: string): never {
-  throw new Error(message)
-}
-
-function infiniteLoop(): never {
-  while (true) {}
-}
-
-function infiniteRec(): never {
-  return infiniteRec()
-}
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -125,6 +139,34 @@ create(undefined) // Error
 create(42) // Error
 create('string') // Error
 create(false) // Error
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### void
+
+```ts data-line-numbers=[]
+function showMessage(message: string): void {
+  console.log(message)
+}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### never
+
+```ts data-line-numbers=[]
+function error(message: string): never {
+  throw new Error(message)
+}
+
+function infiniteLoop(): never {
+  while (true) {}
+}
+
+function infiniteRec(): never {
+  return infiniteRec()
+}
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -173,6 +215,124 @@ if (hasX(fooUnknown)) {
 upperCase(fooUnknown as string)
 ```
 
+</script></section></section><section ><section data-markdown><script type="text/template">
+
+## Types & Interfaces
+
+</script></section><section data-markdown><script type="text/template">
+
+### type
+
+Can't be re-opened or changed after being declared
+
+```ts data-line-numbers=[]
+type StringType = string
+
+type TupleType = [string, string, string]
+
+type ConsoleLogType = (smth: string) => void
+
+type OnlyBools = {
+  [key: string]: boolean
+}
+
+const conforms: OnlyBools = {
+  del: true,
+  rodney: false,
+}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### type
+
+#### union
+
+```ts data-line-numbers=[]
+type UnionType1 = string | number
+
+function showType(arg: UnionType1) {
+  console.log(arg)
+}
+
+showType('test') // test
+showType(7) // 7
+
+type UnionType2 = {a: string} | {b: number}
+const ut21: UnionType2 = {a: ''}
+const ut22: UnionType2 = {b: 3}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### type
+
+#### intersection
+
+```ts data-line-numbers=[]
+type LeftType = { id: number left: string }
+type RightType = { id: number right: string }
+
+type IntersectionType = LeftType & RightType
+
+function showType(args: IntersectionType) {
+  console.log(args)
+}
+
+showType({ id: 1, left: 'test', right: 'test' }) // {id: 1, left: "test", right: "test"}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### interfaces
+
+#### extending
+
+```ts data-line-numbers=[]
+interface Animal {
+  name: string
+}
+
+interface Bear extends Animal {
+  honey: boolean
+}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### interfaces
+
+#### declaration merging
+
+```ts data-line-numbers=[]
+interface Window {
+  title: string
+}
+
+interface Window {
+  ts: import('typescript')
+}
+
+const src = 'const a = "Hello World"'
+window.ts.transpileModule(src, {})
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### interfaces vs types
+
+When to use type:
+
+- when defining an alias for primitive types (string, boolean, number, etc)
+- when need to use union or intersection
+- when defining tuple types
+- when defining function types
+- when needing to take advantage of mapped types
+
+When to use interface:
+
+- for all object types where using type is not required (see above)
+- when you want to take advantage of declaration merging
 </script></section></section><section ><section data-markdown><script type="text/template">
 
 ## Non-primitive types
@@ -313,34 +473,170 @@ let directions = [
 */
 ```
 
+</script></section></section><section ><section data-markdown><script type="text/template">
+
+## OOP in TS
+
 </script></section><section data-markdown><script type="text/template">
 
-### enum
-
-#### objects vs enums
-
-as const (const assertion) – used for strings makes them literals, object literals get readonly properties, array literals become readonly tuples
+### JS class
 
 ```ts data-line-numbers=[]
-// objects vs enums
-const enum EDirection {
-  Up,
-  Down,
-  Left,
-  Right,
+class Greeter {
+  constructor(message) {
+    this.greeting = message
+  }
+
+  greet() {
+    console.log(`Hello, ${this.greeting}`)
+  }
 }
-console.log(EDirection.Up) // 0
 
-const ODirection = {
-  Up: 0,
-  Down: 1,
-  Left: 2,
-  Right: 3,
-} as const
-
-console.log(ODirection) // { Up: 0, Down: 1, Left: 2, Right: 3 }
-console.log(ODirection.Up) // 0
+const greeter = new Greeter('world')
 ```
+
+</script></section><section data-markdown><script type="text/template">
+
+### readonly
+
+```ts data-line-numbers=[]
+class Greeter {
+  readonly greeting: string
+
+  constructor(message: string) {
+    this.greeting = message
+  }
+
+  greet() {
+    console.log(`Hello, ${this.greeting}`)
+  }
+}
+
+const greeter = new Greeter('world')
+
+console.log(greeter.greeting)
+greeter.greeting = 'sun' // Cannot assign to 'greeting' because it is a read-only property.
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### private
+
+```ts data-line-numbers=[]
+class Greeter {
+  private readonly greeting: string
+
+  constructor(message: string) {
+    this.greeting = message
+  }
+
+  greet() {
+    console.log(`Hello, ${this.greeting}`)
+  }
+}
+
+const greeter = new Greeter('world')
+console.log(greeter.greeting) // Property 'greeting' is private
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### implements Interface
+
+```ts data-line-numbers=[]
+interface GreeterInterface {
+  greet(appeal: string): void
+}
+
+class Greeter implements GreeterInterface {
+  private readonly greeting: string
+
+  constructor(message: string) {
+    this.greeting = message
+  }
+
+  greet(appeal: string) {
+    console.log(`Hello, ${this.greeting} from ${appeal}`)
+  }
+}
+
+const greeter = new Greeter('world')
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### static
+
+```ts data-line-numbers=[]
+class Circle {
+  static pi: number = 3.14
+
+  static calculateArea(radius: number) {
+    return this.pi * radius * radius
+  }
+}
+
+console.log(Circle.pi)
+console.log(Circle.calculateArea(5))
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### protected
+
+```ts data-line-numbers=[]
+class Person {
+  protected name: string
+  constructor(name: string) {
+    this.name = name
+  }
+}
+
+class Employee extends Person {
+  private department: string
+
+  constructor(name: string, department: string) {
+    super(name)
+    this.department = department
+  }
+
+  getElevatorPitch() {
+    return `Hello, my name is ${this.name} and I work in ${this.department}.`
+  }
+}
+
+const howard = new Employee('Howard', 'Sales')
+console.log(howard.getElevatorPitch())
+console.log(howard.name) // Property 'name' is protected
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### abstract
+
+```ts data-line-numbers=[]
+abstract class Animal {
+  move(): void {
+    console.log('roaming the earth...')
+  }
+}
+
+const animal = new Animal() // Cannot create an instance of an abstract class.
+
+class Rabbit implements Animal {
+  move(): void {
+    console.log('jump')
+  }
+}
+
+const rabbit = new Rabbit() // OK
+
+rabbit.move() // jump
+```
+
+</script></section></section><section ><section data-markdown><script type="text/template">
+
+## Other features
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -376,79 +672,48 @@ tree.left.left.left.left.left.left.left.value
 
 </script></section><section data-markdown><script type="text/template">
 
-### interfaces vs types
-
-When to use type:
-
-- when defining an alias for primitive types (string, boolean, number, etc)
-- when defining tuple types
-- when defining function types
-- when defining a union
-- when trying to overload functions in object types via composition
-- when needing to take advantage of mapped types
-
-When to use interface:
-
-- for all object types where using type is not required (see above)
-- when you want to take advantage of declaration merging.
-
-</script></section></section><section ><section data-markdown><script type="text/template">
-
-## logic operators
-
-- union
-- intersection
-
-</script></section><section data-markdown><script type="text/template">
-
-### union
+### complex interfaces
 
 ```ts data-line-numbers=[]
-type UnionType1 = string | number
-
-function showType(arg: UnionType1) {
-  console.log(arg)
+interface ComplexInterface {
+  readonly id: ID
+  readonly passportData: PassportData
+  name?: string
+  coordinates: Coordinates
 }
 
-showType('test') // test
-showType(7) // 7
+type ID = string | number
 
-type UnionType2 = {a: string} | {b: number}
-const ut21: UnionType2 = {a: ''}
-const ut22: UnionType2 = {b: 3}
+type PassportData = {
+  number: string
+  expiresAt: string
+}
+
+interface Coordinates {
+  lng: string
+  lat: string
+}
 ```
 
 </script></section><section data-markdown><script type="text/template">
 
-### intersection
+### lookup types
 
 ```ts data-line-numbers=[]
-type LeftType = { id: number left: string }
-type RightType = { id: number right: string }
-
-type IntersectionType = LeftType & RightType
-
-function showType(args: IntersectionType) {
-  console.log(args)
+interface Person {
+  name: string
+  location: string
+  coords: {
+    lng: string
+    lat: string
+  }
 }
 
-showType({ id: 1, left: 'test', right: 'test' }) // {id: 1, left: "test", right: "test"}
-```
+// We can also rename fields and fields below will autorename too (except union types)
 
-</script></section></section><section ><section data-markdown><script type="text/template">
-
-## Other features
-
-</script></section><section data-markdown><script type="text/template">
-
-### template literal
-
-```ts data-line-numbers=[]
-type NotificationObject = 'user' | 'host'
-type NotificationOperation = 'changed' | 'deleted'
-
-// "user changed" | "user deleted" | "host changed" | "host deleted"
-type NotificationMessage = `${NotificationObject} ${NotificationOperation}`
+type PersonKey = keyof Person // "name" | "location" | "coords"
+type Name = Person['name'] // string
+type Coords = Person['coords'] // {lng: string; lat: string}
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -503,23 +768,14 @@ move(pet)
 
 </script></section><section data-markdown><script type="text/template">
 
-### lookup types
+### template literal
 
 ```ts data-line-numbers=[]
-interface Person {
-  name: string
-  location: string
-  coords: {
-    lng: string
-    lat: string
-  }
-}
+type NotificationObject = 'user' | 'host'
+type NotificationOperation = 'changed' | 'deleted'
 
-// We can also rename fields and fields below will autorename too (except union types)
-
-type PersonKey = keyof Person // "name" | "location" | "coords"
-type Name = Person['name'] // string
-type Coords = Person['coords'] // {lng: string; lat: string}
+// "user changed" | "user deleted" | "host changed" | "host deleted"
+type NotificationMessage = `${NotificationObject} ${NotificationOperation}`
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -546,44 +802,22 @@ let jeremy = new Person('Jeremy Bearimy')
 jeremy.#name
 ```
 
-</script></section><section data-markdown><script type="text/template">
-
-### infer
-
-#### example 1
-
-```ts data-line-numbers=[]
-type IsNumber<T> = T extends number ? 'number' : 'other'
-
-type WithNumber = IsNumber<number> // number
-type WithOther = IsNumber<string> // other
-
-type IsArray<T> = T extends Array<any> ? 'array' : 'other'
-
-type WithArray = IsArray<string[]> // array
-type WithoutArray = IsArray<string> // other
-```
-
-</script></section><section data-markdown><script type="text/template">
-
-### infer
-
-#### example 2
-
-```ts data-line-numbers=[]
-type UnboxArray<T> = T extends Array<infer Item> ? Item : T
-
-type UnboxedStringArray = UnboxArray<string[]> // string
-type UnboxedNumberArray = UnboxArray<number[]> // number
-
-type Auto = {maxSpeed: number}
-type UnboxedAutoArray = UnboxArray<Auto[]> // { maxSpeed: number }
-type UnboxedString = UnboxArray<string> // string
-```
-
 </script></section></section><section ><section data-markdown><script type="text/template">
 
 ## Using js library without type declarations
+
+</script></section><section data-markdown><script type="text/template">
+
+### app.ts
+
+```ts data-line-numbers=[]
+// Could not find a declaration file for module 'right-pad'.
+// 'node_modules/right-pad/rightpad.js' implicitly has an 'any' type.
+
+import rightPad from 'right-pad'
+```
+
+</script></section><section data-markdown><script type="text/template">
 
 Solutions:
 
@@ -592,39 +826,12 @@ Solutions:
 
 </script></section><section data-markdown><script type="text/template">
 
-### math.js
+### right-pad.d.ts
 
 ```ts data-line-numbers=[]
-function sin(value) {
-  return Math.sin(value)
+declare module 'right-pad' {
+  export default function rightPad(arg: string): string
 }
-
-function cos(value) {
-  return Math.cos(value)
-}
-
-const pi = Math.pi
-
-function sum(a, b, c) {
-  return a + b + c
-}
-
-module.exports = {
-  sin,
-  cos,
-  pi,
-  sum,
-}
-```
-
-</script></section><section data-markdown><script type="text/template">
-
-### math.d.ts
-
-```ts data-line-numbers=[]
-export declare function sin(value: number): number
-export declare function sum(a: number, b: number, c: number): number
-export declare const pi: string
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -632,25 +839,62 @@ export declare const pi: string
 ### app.ts
 
 ```ts data-line-numbers=[]
-import {sin, sum} from './math'
+import rightPad from 'right-pad'
 
-sin(1) // Ok
-sin('1') // Argument of type 'string' is not assignable to parameter of type 'number'
-sum(1, 2, 3) // Ok
-sum(1, '2', 'd') // Argument of type 'string' is not assignable to parameter of type 'number'
+rightPad(3) // Argument of type 'number' is not assignable to parameter of type 'string'.
+rightPad('3') // Ok
 ```
 
 </script></section></section><section ><section data-markdown><script type="text/template">
 
 ## utility types
 
+- Record
+- Readonly
 - Partial/Required
 - Pick/Omit
 - Exclude/Extract
-- Readonly
-- Record
 - ReturnType
 - stringManipulation
+
+</script></section><section data-markdown><script type="text/template">
+
+### Record
+
+```ts data-line-numbers=[]
+type Dictionary1 = {[key: string]: string | number}
+
+const dic1: Dictionary1 = {}
+const dic2: Dictionary1 = {name: 'Garry', level: 3}
+
+type Dictionary2 = Record<string, string | number>
+
+const dic3: Dictionary2 = {name: 'Garry', level: 4}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Readonly
+
+```ts data-line-numbers=[]
+type AdvanceFigure = {
+  width: number
+  height: number
+  coords: {
+    x: number
+    y: number
+  }
+}
+
+const readonlyAdvFigure: Readonly<AdvanceFigure> = {
+  width: 10,
+  height: 10,
+  coords: {x: 10, y: 10},
+}
+
+readonlyAdvFigure.width = 25 // Cannot assign to 'width' because it is a read-only property
+readonlyAdvFigure.coords.x = 25 // no error
+```
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -704,45 +948,6 @@ type PersonalUserInfo = Exclude<UserInfo, {address: string}>
 
 // { age: string; name: string } | { name: string }
 type UserWithName = Extract<UserInfo, {name: string}>
-```
-
-</script></section><section data-markdown><script type="text/template">
-
-### Readonly
-
-```ts data-line-numbers=[]
-type AdvanceFigure = {
-  width: number
-  height: number
-  coords: {
-    x: number
-    y: number
-  }
-}
-
-const readonlyAdvFigure: Readonly<AdvanceFigure> = {
-  width: 10,
-  height: 10,
-  coords: {x: 10, y: 10},
-}
-
-readonlyAdvFigure.width = 25 // Cannot assign to 'width' because it is a read-only property
-readonlyAdvFigure.coords.x = 25 // no error
-```
-
-</script></section><section data-markdown><script type="text/template">
-
-### Record
-
-```ts data-line-numbers=[]
-type Dictionary1 = {[key: string]: string | number}
-
-const dic1: Dictionary1 = {}
-const dic2: Dictionary1 = {name: 'Garry', level: 3}
-
-type Dictionary2 = Record<string, string | number>
-
-const dic3: Dictionary2 = {name: 'Garry', level: 4}
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -867,11 +1072,9 @@ cats.forEach((cat) => cat.meow()) // Failed in runtime with cat.meow is not a fu
 
 ### Useful links
 
-- [why TS is bad](https://www.t.me/why_typescript_is_bad)
-- [TS issues](https://github.com/microsoft/TypeScript/issues)
-- [TS worship in UA outsourcing](https://www.youtube.com/watch?v=H9-F8uhKMRk)
 - [do's and don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
 - [best practices](https://blog.softwaremill.com/typescript-mistakes-to-avoid-d3ab240c90eb)
+- [why TS is bad](https://www.t.me/why_typescript_is_bad)
 </script></section></section></div>
     </div>
 
