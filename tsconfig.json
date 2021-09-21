@@ -1,16 +1,15 @@
 {
-  "include": ["src/**/**/*"],
   "compilerOptions": {
+    "rootDir": "src",
     "allowJs": true,
     "esModuleInterop": true,
-    "jsx": "preserve",
     "lib": ["es2019", "dom"],
-    "module": "commonjs",
+    "module": "ES6",
     "moduleResolution": "node",
-    "rootDir": "src",
     "sourceMap": true,
     "strict": true,
     "target": "es2019"
   },
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "src/**/math.js"]
 }

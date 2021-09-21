@@ -18,7 +18,7 @@ Repository: [https://github.com/evgeniy-dainovich/ts](https://github.com/evgeniy
 
 <!--v-->
 
-### TypeScript is JavaScript with syntax for types.
+### TypeScript is JavaScript with syntax for types
 
 - Voted 2nd most loved programming language in the [Stack Overflow 2020 Developer survey](https://insights.stackoverflow.com/survey/2020#most-loved-dreaded-and-wanted)
 
@@ -26,10 +26,52 @@ Repository: [https://github.com/evgeniy-dainovich/ts](https://github.com/evgeniy
 
 <!--v-->
 
+### Run .ts files with node
+
+- `npm install -g typescript tsc`
+- `tsc --init`
+- create `filename.ts` file
+- `tsc filename.ts`
+- `node filename.js`
+
+<!--v-->
+
+### Run .ts files with ts-node
+
+- `npm install -D typescript ts-node`
+- create tsconfig.json file with required settings
+- create `filename.ts` file
+- `npx ts-node filename.ts`
+
+<!--v-->
+
+### tsconfig.json
+
+```json data-line-numbers=[]
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "esModuleInterop": true,
+    "lib": ["es2019", "dom"],
+    "module": "es6",
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2019"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "src/**/math.js"]
+}
+```
+
+<!--v-->
+
 ## Useful links
 
 - [Official documentation](https://www.typescriptlang.org/docs/)
 - [Playground](https://www.typescriptlang.org/play)
+- [tsconfig options](https://www.typescriptlang.org/tsconfig)
 
 <!--s-->
 
@@ -848,8 +890,6 @@ cats.forEach((cat) => cat.meow()) // Failed in runtime with cat.meow is not a fu
 
 ### Useful links
 
-- [why TS is bad](https://www.t.me/why_typescript_is_bad)
-- [TS issues](https://github.com/microsoft/TypeScript/issues)
-- [TS worship in UA outsourcing](https://www.youtube.com/watch?v=H9-F8uhKMRk)
 - [do's and don'ts](https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html)
 - [best practices](https://blog.softwaremill.com/typescript-mistakes-to-avoid-d3ab240c90eb)
+- [why TS is bad](https://www.t.me/why_typescript_is_bad)
