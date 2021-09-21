@@ -16,12 +16,13 @@ div.reveal::before {
 }
 
 div.reveal::after {
-  content: 'iTechArt';
+  content: ':iTechArt';
   position: fixed;
   top: 20px;
-  left: 40px;
+  left: 25px;
   color: white;
   font-style: initial;
+  font-weight: bold;
 }
 
 * {
