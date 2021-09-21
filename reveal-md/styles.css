@@ -13,6 +13,7 @@ div.reveal::before {
   top: 0;
   position: fixed;
   background-color: red;
+  z-index: 10;
 }
 
 div.reveal::after {
@@ -23,6 +24,7 @@ div.reveal::after {
   color: white;
   font-style: initial;
   font-weight: bold;
+  z-index: 10;
 }
 
 * {

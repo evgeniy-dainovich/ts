@@ -50,3 +50,11 @@ const tree2: Tree2<number> = {
 }
 
 tree2?.left?.left?.left?.left?.left?.left?.left?.value
+
+interface dbSet<T> {
+  get(id: number): T
+  getAll(): T[]
+  create(smth: T): {id: number}
+  patch(fieldsToUpdate: Partial<T>): T
+  delete(id: number): void
+}

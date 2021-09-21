@@ -17,3 +17,7 @@ If you need to accept an arbitrary function but don’t intend to call it, the t
 function doSomething(f: Function) {
   return f(1, 2, 3)
 }
+
+function doSomething1(f: (arg1: number, arg2: number, arg3: number) => number) {
+  return f(1, 2, 3)
+}

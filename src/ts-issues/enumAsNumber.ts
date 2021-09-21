@@ -1,5 +1,6 @@
 enum TestEnum {
-  foo,
+  foo, // 0
+  bar, // 1
 }
 
 const testArg: number = 10

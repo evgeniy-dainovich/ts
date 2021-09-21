@@ -79,12 +79,14 @@ Repository: [https://github.com/evgeniy-dainovich/ts](https://github.com/evgeniy
 
 <!--v-->
 
-### String, number, boolean
+### string, number, boolean, null, undefined
 
 ```ts data-line-numbers=[]
 const age: number = 12
 const givenName: string = 'Alex'
 const isAdult: boolean = false
+const undef: undefined = undefined
+const nullable: null = null
 
 type PaperName = string
 function collect(paper: PaperName): void {}
@@ -114,6 +116,7 @@ object is a type that represents the non-primitive type
 function create(o: object | null): void {}
 
 create({prop: 0}) // ok
+create([]) // ok
 create(null) // ok
 create(undefined) // Error
 
@@ -179,7 +182,7 @@ upperCase(fooUnknown) // error
 #### how to use?
 
 ```ts data-line-numbers=[]
-let fooUnknown: unknown = JSON.parse({x: {prop: 'x'}})
+let fooUnknown: unknown = JSON.parse('{"x":{"prop":"x"}}')
 
 fooUnknown.x.prop // Object is of type 'unknown'.
 
@@ -230,14 +233,14 @@ const conforms: OnlyBools = {
 #### union
 
 ```ts data-line-numbers=[]
-type UnionType1 = string | number
+type UnionType1 = 'type1' | 'type2'
 
 function showType(arg: UnionType1) {
   console.log(arg)
 }
 
-showType('test') // test
-showType(7) // 7
+showType('type1') // test
+showType(7) // Argument of type '7' is not assignable to parameter of type 'UnionType1'.
 
 type UnionType2 = {a: string} | {b: number}
 const ut21: UnionType2 = {a: ''}
@@ -388,6 +391,11 @@ const y = sum('a', 'b')
 
 ```ts data-line-numbers=[]
 function doSomething(f: Function) {
+  return f(1, 2, 3)
+}
+
+// better
+function doSomething(f: (arg1: number, arg2: number, arg3: number) => number) {
   return f(1, 2, 3)
 }
 ```
@@ -546,23 +554,6 @@ const greeter = new Greeter('world')
 
 <!--v-->
 
-### static
-
-```ts data-line-numbers=[]
-class Circle {
-  static pi: number = 3.14
-
-  static calculateArea(radius: number) {
-    return this.pi * radius * radius
-  }
-}
-
-console.log(Circle.pi)
-console.log(Circle.calculateArea(5))
-```
-
-<!--v-->
-
 ### protected
 
 ```ts data-line-numbers=[]
@@ -589,6 +580,23 @@ class Employee extends Person {
 const howard = new Employee('Howard', 'Sales')
 console.log(howard.getElevatorPitch())
 console.log(howard.name) // Property 'name' is protected
+```
+
+<!--v-->
+
+### static
+
+```ts data-line-numbers=[]
+class Circle {
+  static pi: number = 3.14
+
+  static calculateArea(radius: number) {
+    return this.pi * radius * radius
+  }
+}
+
+console.log(Circle.pi)
+console.log(Circle.calculateArea(5))
 ```
 
 <!--v-->
@@ -626,8 +634,7 @@ rabbit.move() // jump
 ```ts data-line-numbers=[]
 type Container<T> = {value: T}
 
-// Type 'string' is not assignable to type 'number'
-const container1: Container<number> = {value: '344'}
+const container1: Container<number> = {value: '344'} // Type 'string' is not assignable to type 'number'
 const container2: Container<number> = {value: 344}
 ```
 
@@ -636,19 +643,13 @@ const container2: Container<number> = {value: 344}
 ### generic
 
 ```ts data-line-numbers=[]
-type Tree<T> = {
-  value: T
-  left: Tree<T>
-  right: Tree<T>
+interface dbSet<T> {
+  get(id: number): T
+  getAll(): T[]
+  create(smth: T): {id: number}
+  patch(fieldsToUpdate: Partial<T>): T
+  delete(id: number): void
 }
-
-const tree: Tree<number> = {
-  value: 4,
-  left: {} as Tree<number>,
-  right: {} as Tree<number>,
-}
-
-tree.left.left.left.left.left.left.left.value
 ```
 
 <!--v-->
@@ -656,13 +657,6 @@ tree.left.left.left.left.left.left.left.value
 ### complex interfaces
 
 ```ts data-line-numbers=[]
-interface ComplexInterface {
-  readonly id: ID
-  readonly passportData: PassportData
-  name?: string
-  coordinates: Coordinates
-}
-
 type ID = string | number
 
 type PassportData = {
@@ -673,6 +667,13 @@ type PassportData = {
 interface Coordinates {
   lng: string
   lat: string
+}
+
+interface CourierInterface {
+  readonly id: ID
+  readonly passportData: PassportData
+  name?: string
+  coordinates: Coordinates
 }
 ```
 
@@ -704,7 +705,7 @@ type Coords = Person['coords'] // {lng: string; lat: string}
 #### by checking type
 
 ```ts data-line-numbers=[]
-function padLeft(value: string, padding: string | number) {
+function padLeft(value: string, padding: string | number): string {
   if (typeof padding === 'number') {
     return ' '.repeat(padding) + value
   }
@@ -846,11 +847,11 @@ rightPad('3') // Ok
 type Dictionary1 = {[key: string]: string | number}
 
 const dic1: Dictionary1 = {}
-const dic2: Dictionary1 = {name: 'Garry', level: 3}
+const dic2: Dictionary1 = {harryPotter: 'Rowling', twilight: 'Meyer'}
 
 type Dictionary2 = Record<string, string | number>
 
-const dic3: Dictionary2 = {name: 'Garry', level: 4}
+const dic3: Dictionary2 = {harryPotter: 'Rowling'}
 ```
 
 <!--v-->
@@ -984,14 +985,15 @@ buyBook(car) // no any issues with type cheking
 
 ```ts data-line-numbers=[]
 enum TestEnum {
-  foo,
+  foo, // 0
+  bar, // 1
 }
-
-const testArg: number = 10
 
 function func(arg: TestEnum) {
   console.log(arg)
 }
+
+const testArg: number = 10
 
 func(testArg) // no warning
 ```

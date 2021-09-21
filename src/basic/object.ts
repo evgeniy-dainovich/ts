@@ -4,7 +4,8 @@
 
 function create(o: object | null): void {}
 
-create({ prop: 0 }) // ok
+create({prop: 0}) // ok
+create([]) // ok
 create(null) // ok
 create(undefined) // Argument of type 'undefined' is not assignable to parameter of type 'object | null'.
 
