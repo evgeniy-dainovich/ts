@@ -6,6 +6,24 @@
   max-height: 80%;
 }
 
+div.reveal::before {
+  content: '';
+  height: 80px;
+  width: 100%;
+  top: 0;
+  position: fixed;
+  background-color: red;
+}
+
+div.reveal::after {
+  content: 'iTechArt';
+  position: fixed;
+  top: 20px;
+  left: 40px;
+  color: white;
+  font-style: initial;
+}
+
 * {
   /* font-family: Helvetica, sans-serif !important; */
 }
